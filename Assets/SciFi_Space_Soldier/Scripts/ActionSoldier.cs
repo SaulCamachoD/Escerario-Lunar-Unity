@@ -14,19 +14,10 @@ public class ActionSoldier : MonoBehaviour
         // Calcular la dirección del movimiento
         Vector3 movementDirection = new Vector3(horizontalMovement, 0f, verticalMovement).normalized;
 
-        if (movementDirection != Vector3.zero)
-        {
-            // Calcular la rotación hacia la dirección del movimiento
-            Quaternion rotacionDeseada = Quaternion.LookRotation(movementDirection, Vector3.up);
-
-            // Aplicar la rotación gradualmente
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDeseada, 0.15f);
-        }
-
         // Calcular el vector de movimiento
-        Vector3 movimiento = movementDirection * speed * Time.deltaTime;
+        Vector3 movement = movementDirection * speed * Time.deltaTime;
 
         // Aplicar el movimiento al objeto
-        transform.Translate(movimiento);
+        transform.Translate(movement);
     }
 }
