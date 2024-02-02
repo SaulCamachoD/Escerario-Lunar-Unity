@@ -4,21 +4,47 @@ using UnityEngine;
 
 public class actionPlayer : MonoBehaviour
 {
-    public float speed = 5f;
+    public float normalSpeed = 5f;
+    public float sprintSpeed = 30f;
     public float rotate = 150f;
     public Animator animator;
     private float x, y;
+    private Rigidbody rb;
+    private float speed; // Mover la declaración de speed fuera del bloque if-else
 
-    
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        speed = normalSpeed; // Inicializar la velocidad normal al inicio
+    }
+
     void Update()
     {
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
 
-        transform.Rotate(0f,x * Time.deltaTime * rotate, 0f);
-        transform.Translate(0f,0f, y * Time.deltaTime * speed);
+        Vector3 Movement = new Vector3(x, 0f, y);
 
-        animator.SetFloat("VelX",x);
-        animator.SetFloat("VelY",y);
+        if (Input.GetKey(KeyCode.Space))
+        {
+            speed = sprintSpeed;
+            animator.SetBool("Sprint", true);
+        }
+        else
+        {
+            speed = normalSpeed;
+            animator.SetBool("Sprint", false);
+        }
+
+        rb.AddForce(Movement * speed);
+
+        animator.SetFloat("VelX", x);
+        animator.SetFloat("VelY", y);
+
+        float rotacion = Input.GetAxis("Mouse X") * rotate * Time.deltaTime;
+        transform.Rotate(Vector3.up * rotacion);
     }
 }
+
+    
+
